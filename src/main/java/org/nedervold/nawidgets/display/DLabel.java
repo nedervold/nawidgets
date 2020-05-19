@@ -4,10 +4,10 @@ import javax.swing.JLabel;
 
 import nz.sodium.Cell;
 
-public class DStringLabel extends JLabel {
-	public static class Impl extends DWidgetImpl<DStringLabel, String> {
+public class DLabel extends JLabel {
+	public static class Impl extends DWidgetImpl<DLabel, String> {
 
-		public Impl(final DStringLabel component, final Cell<String> inputCell) {
+		public Impl(final DLabel component, final Cell<String> inputCell) {
 			super(component, inputCell);
 		}
 
@@ -17,9 +17,9 @@ public class DStringLabel extends JLabel {
 		}
 	}
 
-	public final Impl impl;
+	private final Impl impl;
 
-	public DStringLabel(final Cell<String> inputCell) {
+	public DLabel(final Cell<String> inputCell) {
 		super(inputCell.sample());
 		impl = new Impl(this, inputCell);
 	}
