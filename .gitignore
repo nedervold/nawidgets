@@ -12,3 +12,8 @@ buildNumber.properties
 # emacs cruft
 \#*
 *~
+
+# Eclipse cruft
+.classpath
+.project
+.settings
