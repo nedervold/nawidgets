@@ -15,9 +15,11 @@ import javax.swing.SwingConstants;
 
 import org.nedervold.nawidgets.display.DLabel;
 import org.nedervold.nawidgets.display.DProgressBar;
+import org.nedervold.nawidgets.display.DTextArea;
 
 import nz.sodium.Cell;
 import nz.sodium.Stream;
+import nz.sodium.Transaction;
 import nz.sodium.time.MillisecondsTimerSystem;
 
 public class App extends JFrame {
@@ -48,25 +50,33 @@ public class App extends JFrame {
 		final Container cp = getContentPane();
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-		final MillisecondsTimerSystem sys = new MillisecondsTimerSystem();
-		final Stream<Long> millisStream = Timers.periodic(sys, 1000L);
-		final Stream<Date> dateStream = millisStream.map(Date::new);
-		final Stream<GregorianCalendar> calStream = dateStream.map(App::dateToCal);
-		final Stream<String> timeStream = dateStream.map(FORMATTER::format);
+		Transaction.runVoid(() -> {
+			final MillisecondsTimerSystem sys = new MillisecondsTimerSystem();
+			final Stream<Long> millisStream = Timers.periodic(sys, 1000L);
+			final Stream<Date> dateStream = millisStream.map(Date::new);
+			final Stream<GregorianCalendar> calStream = dateStream.map(App::dateToCal);
+			final Stream<String> timeStream = dateStream.map(FORMATTER::format);
+			final String initValue = FORMATTER.format(new Date(sys.time.sample()));
+			final Cell<String> timeCell = timeStream.hold(initValue);
 
-		final String initValue = FORMATTER.format(new Date(sys.time.sample()));
-		final DLabel label = new DLabel(timeStream.hold(initValue));
-		label.setBorder(BorderFactory.createEmptyBorder(BORDER_SIZE, BORDER_SIZE, BORDER_SIZE, BORDER_SIZE));
+			final DLabel label = new DLabel(timeCell);
+			label.setBorder(BorderFactory.createEmptyBorder(BORDER_SIZE, BORDER_SIZE, BORDER_SIZE, BORDER_SIZE));
+			cp.add(label, BorderLayout.NORTH);
 
-		cp.add(label, BorderLayout.NORTH);
+			final Stream<Integer> secondsStream = calStream.map((cal) -> cal.get(Calendar.SECOND));
+			final Cell<Integer> secondsCell = secondsStream.hold(0);
+			final DProgressBar pb = new DProgressBar(SwingConstants.HORIZONTAL, 0, 59, secondsCell);
+			cp.add(pb, BorderLayout.SOUTH);
 
-		final Stream<Integer> secondsStream = calStream.map((cal) -> cal.get(Calendar.SECOND));
-		final Cell<Integer> secondsCell = secondsStream.hold(0);
-		final DProgressBar pb = new DProgressBar(SwingConstants.HORIZONTAL, 0, 59, secondsCell);
-		cp.add(pb, BorderLayout.SOUTH);
+			final Cell<String> sentenceTime = timeCell
+					.map((str) -> "He says,\n“The time is now exactly " + str + ".”\nThat’s what he says.\n");
+			final DTextArea ta = new DTextArea(4, 20, sentenceTime);
+			cp.add(ta, BorderLayout.CENTER);
+			pack();
+		});
 
-		pack();
 		setVisible(true);
+
 	}
 
 }
