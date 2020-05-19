@@ -20,6 +20,17 @@
       <version>4.11</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>io.vavr</groupId>
+      <artifactId>vavr</artifactId>
+      <version>0.10.2</version>
+    </dependency>
+    <dependency>
+      <groupId>nz.sodium</groupId>
+      <artifactId>sodium</artifactId>
+      <version>1.2.0</version>
+      <scope>compile</scope>
+    </dependency>
   </dependencies>
   <build>
     <plugins>

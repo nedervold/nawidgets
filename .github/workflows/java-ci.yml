@@ -14,5 +14,5 @@ jobs:
           java-version: 1.8
       - name: Build with Maven
         run: mvn -B package --file pom.xml
-      - name: Run with Maven
-        run: mvn -B exec:java --file pom.xml
+      # - name: Run with Maven
+      #   run: mvn -B exec:java --file pom.xml
