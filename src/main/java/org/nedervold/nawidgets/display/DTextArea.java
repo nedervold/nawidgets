@@ -19,7 +19,7 @@ public class DTextArea extends JTextArea {
 
 	private final Impl impl;
 
-	public DTextArea(int rows, int columns, Cell<String> inputCell) {
+	public DTextArea(final int rows, final int columns, final Cell<String> inputCell) {
 		super(inputCell.sample(), rows, columns);
 		impl = new Impl(this, inputCell);
 		setEditable(false);
