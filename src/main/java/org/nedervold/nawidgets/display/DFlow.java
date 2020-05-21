@@ -1,17 +1,18 @@
 package org.nedervold.nawidgets.display;
 
+import java.awt.FlowLayout;
 import java.util.List;
 
-import javax.swing.Box;
 import javax.swing.JComponent;
+import javax.swing.JPanel;
 
 import nz.sodium.Cell;
 
-public class DBox<C extends JComponent> extends Box {
+public class DFlow<C extends JComponent> extends JPanel {
 
-	public static class Impl<C extends JComponent> extends DWidgetImpl<DBox<C>, List<C>> {
+	public static class Impl<C extends JComponent> extends DWidgetImpl<DFlow<C>, List<C>> {
 
-		public Impl(final DBox<C> component, final Cell<List<C>> inputCell) {
+		public Impl(final DFlow<C> component, final Cell<List<C>> inputCell) {
 			super(component, inputCell);
 		}
 
@@ -31,8 +32,8 @@ public class DBox<C extends JComponent> extends Box {
 
 	private final Impl<C> impl;
 
-	public DBox(final int orientation, final Cell<List<C>> inputCell) {
-		super(orientation);
+	public DFlow(final Cell<List<C>> inputCell) {
+		super(new FlowLayout(), true);
 		impl = new Impl<>(this, inputCell);
 	}
 
