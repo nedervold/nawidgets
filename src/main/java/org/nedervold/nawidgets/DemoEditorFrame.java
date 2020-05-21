@@ -20,6 +20,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 
 import org.nedervold.nawidgets.display.DBox;
@@ -28,13 +29,20 @@ import org.nedervold.nawidgets.display.DLabel;
 import org.nedervold.nawidgets.editor.ECheckBox;
 import org.nedervold.nawidgets.editor.EComboBox;
 import org.nedervold.nawidgets.editor.EDateSpinner;
+import org.nedervold.nawidgets.editor.EIntegerSpinner;
+import org.nedervold.nawidgets.editor.ESlider;
 import org.nedervold.nawidgets.editor.ETextArea;
 
 import nz.sodium.Cell;
+import nz.sodium.Stream;
 import nz.sodium.StreamSink;
 import nz.sodium.Transaction;
 
 public class DemoEditorFrame extends JFrame {
+
+	public static enum WhichChanged {
+		SLIDER_CHANGED, SPINNER_CHANGED
+	};
 
 	private static final int BORDER_SIZE = 8;
 
@@ -78,7 +86,26 @@ public class DemoEditorFrame extends JFrame {
 			final DLabel lbl = new DLabel(x);
 			vbox.add(lbl);
 			vbox.setBorder(BorderFactory.createEmptyBorder(BORDER_SIZE, BORDER_SIZE, BORDER_SIZE, BORDER_SIZE));
-			cp.add(vbox, BorderLayout.SOUTH);
+			final Box hbox = Box.createHorizontalBox();
+
+			final Box vbox2 = Box.createVerticalBox();
+
+			// TODO I wanted to put these two in sync, but can't figure how to do it.
+			final EIntegerSpinner spinner = new EIntegerSpinner(0, 100, 1, new Stream<>(), 0);
+			final ESlider slider = new ESlider(SwingConstants.HORIZONTAL, 0, 100, new Stream<>(), 0);
+			slider.setMajorTickSpacing(10);
+			slider.setPaintTicks(true);
+			slider.createStandardLabels(10);
+			slider.setPaintLabels(true);
+			final Cell<String> diff = spinner.value().lift(slider.value(),
+					(sp, sl) -> "spinner - slider = " + (sp - sl));
+
+			vbox2.add(spinner);
+			vbox2.add(slider);
+			vbox2.add(new DLabel(diff));
+			hbox.add(vbox);
+			hbox.add(vbox2);
+			cp.add(hbox, BorderLayout.SOUTH);
 
 			final ETextArea ta = new ETextArea(new StreamSink<>(), "", 8, 60);
 			ta.setLineWrap(true);

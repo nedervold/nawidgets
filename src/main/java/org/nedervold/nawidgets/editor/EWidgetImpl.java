@@ -20,13 +20,13 @@ import nz.sodium.StreamSink;
 public abstract class EWidgetImpl<S, V, M, L> {
 	protected final S component;
 
-	protected final L swingListener;
-
-	private final Listener sodiumListener;
-
 	protected final M model;
 
 	protected final Cell<V> outputCell;
+
+	private final Listener sodiumListener;
+
+	protected final L swingListener;
 
 	private final Cell<Boolean> userChangesAllowed;
 

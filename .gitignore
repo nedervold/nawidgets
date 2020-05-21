@@ -17,3 +17,6 @@ buildNumber.properties
 .classpath
 .project
 .settings
+
+# macOS cruft
+.DS_Store
