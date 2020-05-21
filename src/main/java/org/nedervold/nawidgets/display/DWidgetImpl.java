@@ -5,19 +5,15 @@ import javax.swing.SwingUtilities;
 import nz.sodium.Cell;
 import nz.sodium.Listener;
 import nz.sodium.Operational;
-import nz.sodium.Stream;
 
 public abstract class DWidgetImpl<S, V> {
-	public final S component;
+	protected final S component;
 
-	public final Stream<V> inputStream;
-
-	public final Listener listener;
+	private final Listener sodiumListener;
 
 	public DWidgetImpl(final S component, final Cell<V> inputCell) {
 		this.component = component;
-		this.inputStream = Operational.updates(inputCell);
-		listener = inputStream.listen(value -> {
+		sodiumListener = Operational.updates(inputCell).listen(value -> {
 			SwingUtilities.invokeLater(() -> {
 				setComponentValue(value);
 			});
@@ -31,6 +27,6 @@ public abstract class DWidgetImpl<S, V> {
 	public abstract void setComponentValue(V value);
 
 	public void unlisten() {
-		listener.unlisten();
+		sodiumListener.unlisten();
 	}
 }

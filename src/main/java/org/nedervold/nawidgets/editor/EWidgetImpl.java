@@ -20,11 +20,9 @@ import nz.sodium.StreamSink;
 public abstract class EWidgetImpl<S, V, M, L> {
 	protected final S component;
 
-	protected final L componentListener;
+	protected final L swingListener;
 
-	private final StreamSink<Integer> decrementPending = new StreamSink<>();
-
-	private final Listener listener;
+	private final Listener sodiumListener;
 
 	protected final M model;
 
@@ -38,6 +36,7 @@ public abstract class EWidgetImpl<S, V, M, L> {
 		this.component = component;
 
 		// Set up userChangesAllowed.
+		final StreamSink<Integer> decrementPending = new StreamSink<>();
 		final Stream<Integer> incrementPending = inputStream.map(v -> 1);
 		final Stream<Integer> pendingDeltas = incrementPending.orElse(decrementPending);
 		final Cell<Integer> pendingExternalChanges = pendingDeltas.accum(0, (d, b) -> b + d);
@@ -47,33 +46,33 @@ public abstract class EWidgetImpl<S, V, M, L> {
 		this.userChangesSink = new StreamSink<>();
 		this.outputCell = userChangesSink.gate(userChangesAllowed).orElse(inputStream).hold(initValue);
 
-		this.componentListener = createComponentListener();
+		this.swingListener = createSwingListener();
 		this.model = getModel();
-		addComponentListener();
+		addSwingListener();
 
-		listener = inputStream.listen(value -> {
+		sodiumListener = inputStream.listen(value -> {
 			SwingUtilities.invokeLater(() -> {
-				removeComponentListener();
+				removeSwingListener();
 				setComponentValue(value);
-				addComponentListener();
+				addSwingListener();
 				decrementPending.send(-1);
 			});
 		});
 	}
 
-	public abstract void addComponentListener();
+	public abstract void addSwingListener();
 
-	public abstract L createComponentListener();
+	public abstract L createSwingListener();
 
 	public abstract V getComponentValue();
 
 	public abstract M getModel();
 
-	public abstract void removeComponentListener();
+	public abstract void removeSwingListener();
 
 	public abstract void setComponentValue(V value);
 
 	public void unlisten() {
-		listener.unlisten();
+		sodiumListener.unlisten();
 	}
 }

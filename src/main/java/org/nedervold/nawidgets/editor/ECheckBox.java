@@ -17,12 +17,12 @@ public class ECheckBox extends JCheckBox {
 		}
 
 		@Override
-		public void addComponentListener() {
-			model.addActionListener(componentListener);
+		public void addSwingListener() {
+			model.addActionListener(swingListener);
 		}
 
 		@Override
-		public ActionListener createComponentListener() {
+		public ActionListener createSwingListener() {
 			return new ActionListener() {
 				private Boolean value = null;
 
@@ -50,8 +50,8 @@ public class ECheckBox extends JCheckBox {
 		}
 
 		@Override
-		public void removeComponentListener() {
-			model.removeActionListener(componentListener);
+		public void removeSwingListener() {
+			model.removeActionListener(swingListener);
 		}
 
 		@Override

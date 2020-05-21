@@ -14,12 +14,12 @@ public class ETextComponentImpl<S extends JTextComponent> extends EWidgetImpl<S,
 	}
 
 	@Override
-	public void addComponentListener() {
-		model.addDocumentListener(componentListener);
+	public void addSwingListener() {
+		model.addDocumentListener(swingListener);
 	}
 
 	@Override
-	public DocumentListener createComponentListener() {
+	public DocumentListener createSwingListener() {
 		return new DocumentListener() {
 			private String value = null;
 
@@ -61,8 +61,8 @@ public class ETextComponentImpl<S extends JTextComponent> extends EWidgetImpl<S,
 	}
 
 	@Override
-	public void removeComponentListener() {
-		model.removeDocumentListener(componentListener);
+	public void removeSwingListener() {
+		model.removeDocumentListener(swingListener);
 	}
 
 	@Override

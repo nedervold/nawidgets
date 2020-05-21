@@ -17,12 +17,12 @@ public class EComboBox<E> extends JComboBox<E> {
 		}
 
 		@Override
-		public void addComponentListener() {
-			component.addItemListener(componentListener);
+		public void addSwingListener() {
+			component.addItemListener(swingListener);
 		}
 
 		@Override
-		public ItemListener createComponentListener() {
+		public ItemListener createSwingListener() {
 			return new ItemListener() {
 				private T value = null;
 
@@ -54,8 +54,8 @@ public class EComboBox<E> extends JComboBox<E> {
 		}
 
 		@Override
-		public void removeComponentListener() {
-			component.removeItemListener(componentListener);
+		public void removeSwingListener() {
+			component.removeItemListener(swingListener);
 		}
 
 		@Override

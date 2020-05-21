@@ -14,12 +14,12 @@ public class ESpinnerImpl<V> extends EWidgetImpl<ESpinner<V>, V, SpinnerModel, C
 	}
 
 	@Override
-	public void addComponentListener() {
-		model.addChangeListener(componentListener);
+	public void addSwingListener() {
+		model.addChangeListener(swingListener);
 	}
 
 	@Override
-	public ChangeListener createComponentListener() {
+	public ChangeListener createSwingListener() {
 		return new ChangeListener() {
 			private V value = null;
 
@@ -48,8 +48,8 @@ public class ESpinnerImpl<V> extends EWidgetImpl<ESpinner<V>, V, SpinnerModel, C
 	}
 
 	@Override
-	public void removeComponentListener() {
-		model.removeChangeListener(componentListener);
+	public void removeSwingListener() {
+		model.removeChangeListener(swingListener);
 	}
 
 	@Override
