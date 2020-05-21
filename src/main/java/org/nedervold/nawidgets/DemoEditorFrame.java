@@ -3,14 +3,19 @@ package org.nedervold.nawidgets;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.TreeSet;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
@@ -21,6 +26,8 @@ import org.nedervold.nawidgets.display.DBox;
 import org.nedervold.nawidgets.display.DFlow;
 import org.nedervold.nawidgets.display.DLabel;
 import org.nedervold.nawidgets.editor.ECheckBox;
+import org.nedervold.nawidgets.editor.EComboBox;
+import org.nedervold.nawidgets.editor.EDateSpinner;
 import org.nedervold.nawidgets.editor.ETextArea;
 
 import nz.sodium.Cell;
@@ -91,6 +98,28 @@ public class DemoEditorFrame extends JFrame {
 			final DFlow<JLabel> df = new DFlow<>(comps2);
 			df.setBorder(BorderFactory.createEtchedBorder());
 			cp.add(df, BorderLayout.CENTER);
+
+			final StreamSink<Date> sink = new StreamSink<>();
+			final StreamSink<String> sink2 = new StreamSink<>();
+			final JButton setNow = new JButton("setNow");
+			setNow.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(final ActionEvent e) {
+					sink.send(new Date());
+					sink2.send("start");
+				}
+			});
+			final EComboBox<String> cb = new EComboBox<>(sink2, new String[] { "start", "middle", "end" });
+			final Cell<String> msgCell = cb.value().map((s) -> "We're now in the " + s + " of the demo.");
+			final DLabel dl = new DLabel(msgCell);
+			final EDateSpinner ds = new EDateSpinner(null, null, Calendar.DAY_OF_MONTH, sink, new Date());
+			final Box lilBox = Box.createVerticalBox();
+			lilBox.add(cb);
+			lilBox.add(dl);
+			lilBox.add(setNow);
+			lilBox.add(ds);
+			cp.add(lilBox, BorderLayout.EAST);
 			pack();
 		});
 		setVisible(true);
