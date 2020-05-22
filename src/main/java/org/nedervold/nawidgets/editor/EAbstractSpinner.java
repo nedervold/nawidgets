@@ -6,10 +6,10 @@ import javax.swing.SpinnerModel;
 import nz.sodium.Cell;
 import nz.sodium.Stream;
 
-public abstract class ESpinner<V> extends JSpinner {
+public abstract class EAbstractSpinner<V> extends JSpinner {
 	protected ESpinnerImpl<V> impl;
 
-	protected ESpinner(final SpinnerModel spinnerModel, final Stream<V> inputStream, final V initValue) {
+	protected EAbstractSpinner(final SpinnerModel spinnerModel, final Stream<V> inputStream, final V initValue) {
 		super(spinnerModel);
 		impl = new ESpinnerImpl<>(this, inputStream, initValue);
 	}

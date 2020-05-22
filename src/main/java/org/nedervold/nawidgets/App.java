@@ -9,6 +9,7 @@ public class App {
 			new DemoDisplayFrame();
 			new DemoEditorFrame();
 			new DemoUtilsFrame();
+			new Tmp();
 		});
 	}
 }

@@ -8,8 +8,8 @@ import javax.swing.event.ChangeListener;
 import nz.sodium.Stream;
 
 // TODO change JSpinner to ESpinner<V>
-public class ESpinnerImpl<V> extends EWidgetImpl<ESpinner<V>, V, SpinnerModel, ChangeListener> {
-	ESpinnerImpl(final ESpinner<V> comp, final Stream<V> inp, final V init) {
+public class ESpinnerImpl<V> extends EWidgetImpl<EAbstractSpinner<V>, V, SpinnerModel, ChangeListener> {
+	ESpinnerImpl(final EAbstractSpinner<V> comp, final Stream<V> inp, final V init) {
 		super(comp, inp, init);
 	}
 
