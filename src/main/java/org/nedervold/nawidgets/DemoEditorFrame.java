@@ -26,12 +26,12 @@ import javax.swing.border.Border;
 import org.nedervold.nawidgets.display.DBox;
 import org.nedervold.nawidgets.display.DFlow;
 import org.nedervold.nawidgets.display.DLabel;
+import org.nedervold.nawidgets.editor.ECheckBox;
 import org.nedervold.nawidgets.editor.EComboBox;
 import org.nedervold.nawidgets.editor.EDateSpinner;
 import org.nedervold.nawidgets.editor.EIntegerSpinner;
 import org.nedervold.nawidgets.editor.ESlider;
 import org.nedervold.nawidgets.editor.ETextArea;
-import org.nedervold.nawidgets.editor.EToggleButton;
 
 import io.vavr.Tuple;
 import io.vavr.Tuple2;
@@ -89,7 +89,7 @@ public class DemoEditorFrame extends JFrame {
 
 		Transaction.runVoid(() -> {
 			final Box vbox = Box.createVerticalBox();
-			final EToggleButton bowdlerizeCheckBox = new EToggleButton("Bowdlerize", new StreamSink<Boolean>(), false);
+			final ECheckBox bowdlerizeCheckBox = new ECheckBox("Bowdlerize", new StreamSink<Boolean>(), false);
 			vbox.add(bowdlerizeCheckBox);
 			final Cell<String> x = bowdlerizeCheckBox.value().map(
 					(b) -> b ? "Frankly, my dear, I don't give a darn." : "Frankly, my dear, I don't give a damn.");
