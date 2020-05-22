@@ -1,27 +1,32 @@
 package org.nedervold.nawidgets;
 
-import javax.swing.*;
+import java.util.Arrays;
+import java.util.Optional;
+
+import javax.swing.Box;
+import javax.swing.JButton;
+import javax.swing.JFrame;
 
 import org.nedervold.nawidgets.editor.ERadioButtonGroup;
 
-import java.util.*;
-import nz.sodium.*;
+import nz.sodium.Operational;
+import nz.sodium.StreamSink;
 
 public class Tmp extends JFrame {
 
 	public Tmp() {
 		super("temp");
-		Box vbox = Box.createVerticalBox();
+		final Box vbox = Box.createVerticalBox();
 
-		StreamSink<Optional<String>> sink = new StreamSink<>();
+		final StreamSink<Optional<String>> sink = new StreamSink<>();
 
-		ERadioButtonGroup ebg = new ERadioButtonGroup(
+		final ERadioButtonGroup ebg = new ERadioButtonGroup(
 				Arrays.asList(new String[] { "unu", "du", "tri", "kvar", "kvin" }), sink);
 
-		Operational.updates(ebg.value()).listen((ms) -> {
+		Operational.updates(ebg.outputCell()).listen((ms) -> {
 			System.out.println(ms);
 		});
-		JButton clear = new JButton("clear");
+		final JButton clear = new JButton("clear");
 		clear.addActionListener((e) -> sink.send(Optional.empty()));
 
 		vbox.add(clear);

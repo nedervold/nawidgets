@@ -5,7 +5,7 @@ import javax.swing.JTextField;
 import nz.sodium.Cell;
 import nz.sodium.Stream;
 
-public class ETextField extends JTextField {
+public class ETextField extends JTextField implements Editor<String> {
 
 	private final ETextComponentImpl<ETextField> impl;
 
@@ -15,12 +15,13 @@ public class ETextField extends JTextField {
 	}
 
 	@Override
+	public Cell<String> outputCell() {
+		return impl.outputCell;
+	}
+
+	@Override
 	public void removeNotify() {
 		impl.unlisten();
 		super.removeNotify();
-	}
-
-	public Cell<String> value() {
-		return impl.outputCell;
 	}
 }

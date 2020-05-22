@@ -5,7 +5,7 @@ import javax.swing.JToggleButton;
 import nz.sodium.Cell;
 import nz.sodium.Stream;
 
-public class EToggleButton extends JToggleButton {
+public class EToggleButton extends JToggleButton implements Editor<Boolean> {
 	final EAbstractButtonImpl<EToggleButton> impl;
 
 	public EToggleButton(final String label, final Stream<Boolean> inputStream, final Boolean initVal) {
@@ -14,12 +14,13 @@ public class EToggleButton extends JToggleButton {
 	}
 
 	@Override
+	public Cell<Boolean> outputCell() {
+		return impl.outputCell;
+	}
+
+	@Override
 	public void removeNotify() {
 		impl.unlisten();
 		super.removeNotify();
-	}
-
-	public Cell<Boolean> value() {
-		return impl.outputCell;
 	}
 }

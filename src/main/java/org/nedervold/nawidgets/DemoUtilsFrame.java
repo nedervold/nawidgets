@@ -86,7 +86,7 @@ public class DemoUtilsFrame extends JFrame {
 			final ETextArea editTxt = new ETextArea(txtIn, "", 20, 20);
 			editTxt.setBorder(BorderFactory.createTitledBorder("type here"));
 			hbox2.add(new JScrollPane(editTxt));
-			final Stream<String> editS = Operational.updates(editTxt.value());
+			final Stream<String> editS = Operational.updates(editTxt.outputCell());
 			final MillisecondsTimerSystem sys = new MillisecondsTimerSystem();
 			final Stream<String> debounced = Utils.debounce(sys, 1000L, editS);
 			final DTextArea showTxt = new DTextArea(20, 20, debounced.hold(""));

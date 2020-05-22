@@ -91,7 +91,7 @@ public class DemoEditorFrame extends JFrame {
 			final Box vbox = Box.createVerticalBox();
 			final ECheckBox bowdlerizeCheckBox = new ECheckBox("Bowdlerize", new StreamSink<Boolean>(), false);
 			vbox.add(bowdlerizeCheckBox);
-			final Cell<String> x = bowdlerizeCheckBox.value().map(
+			final Cell<String> x = bowdlerizeCheckBox.outputCell().map(
 					(b) -> b ? "Frankly, my dear, I don't give a darn." : "Frankly, my dear, I don't give a damn.");
 			final DLabel lbl = new DLabel(x);
 			vbox.add(lbl);
@@ -115,13 +115,13 @@ public class DemoEditorFrame extends JFrame {
 			slider.createStandardLabels(10);
 			slider.setPaintLabels(true);
 
-			final Stream<Integer> sliderUpdates = Operational.updates(slider.value());
-			final Stream<Integer> spinnerUpdates = Operational.updates(spinner.value());
+			final Stream<Integer> sliderUpdates = Operational.updates(slider.outputCell());
+			final Stream<Integer> spinnerUpdates = Operational.updates(spinner.outputCell());
 
 			final Stream<Tuple2<Integer, Integer>> sliderUpdatesWithSpinnerValue = sliderUpdates
-					.snapshot(spinner.value(), (sl, sp) -> Tuple.of(sl, sp));
+					.snapshot(spinner.outputCell(), (sl, sp) -> Tuple.of(sl, sp));
 			final Stream<Tuple2<Integer, Integer>> spinnerUpdatesWithSliderValue = spinnerUpdates
-					.snapshot(slider.value(), (sl, sp) -> Tuple.of(sl, sp));
+					.snapshot(slider.outputCell(), (sl, sp) -> Tuple.of(sl, sp));
 
 			final Stream<Integer> filteredNewSpinnerValue = sliderUpdatesWithSpinnerValue.filter((t) -> t._1 != t._2)
 					.map(Tuple2::_1);
@@ -130,7 +130,7 @@ public class DemoEditorFrame extends JFrame {
 			sliderDeferredInput.loop(Operational.defer(filteredNewSliderValue));
 			spinnerDeferredInput.loop(Operational.defer(filteredNewSpinnerValue));
 
-			final Cell<String> diff = spinner.value().lift(slider.value(),
+			final Cell<String> diff = spinner.outputCell().lift(slider.outputCell(),
 					(sp, sl) -> "spinner=" + sp + "; slider=" + sl);
 
 			vbox2.add(spinner);
@@ -142,7 +142,7 @@ public class DemoEditorFrame extends JFrame {
 
 			final ETextArea ta = new ETextArea(new StreamSink<>(), "", 8, 60);
 			ta.setLineWrap(true);
-			final Cell<List<JLabel>> comps = ta.value().map(DemoEditorFrame::f);
+			final Cell<List<JLabel>> comps = ta.outputCell().map(DemoEditorFrame::f);
 			final DBox<JLabel> db = new DBox<>(BoxLayout.Y_AXIS, comps);
 			final JScrollPane sp0 = new JScrollPane(ta, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
 					ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -152,7 +152,7 @@ public class DemoEditorFrame extends JFrame {
 					ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 			cp.add(sp, BorderLayout.WEST);
 
-			final Cell<List<JLabel>> comps2 = ta.value().map(DemoEditorFrame::f2);
+			final Cell<List<JLabel>> comps2 = ta.outputCell().map(DemoEditorFrame::f2);
 
 			// TODO Does flow do what you think it does?
 			final DFlow<JLabel> df = new DFlow<>(comps2);
@@ -171,7 +171,7 @@ public class DemoEditorFrame extends JFrame {
 				}
 			});
 			final EComboBox<String> cb = new EComboBox<>(sink2, new String[] { "start", "middle", "end" });
-			final Cell<String> msgCell = cb.value().map((s) -> "We're now in the " + s + " of the demo.");
+			final Cell<String> msgCell = cb.outputCell().map((s) -> "We're now in the " + s + " of the demo.");
 			final DLabel dl = new DLabel(msgCell);
 			final EDateSpinner ds = new EDateSpinner(null, null, Calendar.DAY_OF_MONTH, sink, new Date());
 			final Box lilBox = Box.createVerticalBox();

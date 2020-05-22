@@ -5,7 +5,7 @@ import javax.swing.JCheckBox;
 import nz.sodium.Cell;
 import nz.sodium.Stream;
 
-public class ECheckBox extends JCheckBox {
+public class ECheckBox extends JCheckBox implements Editor<Boolean> {
 
 	final EAbstractButtonImpl<ECheckBox> impl;
 
@@ -15,12 +15,13 @@ public class ECheckBox extends JCheckBox {
 	}
 
 	@Override
+	public Cell<Boolean> outputCell() {
+		return impl.outputCell;
+	}
+
+	@Override
 	public void removeNotify() {
 		impl.unlisten();
 		super.removeNotify();
-	}
-
-	public Cell<Boolean> value() {
-		return impl.outputCell;
 	}
 }

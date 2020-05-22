@@ -10,7 +10,7 @@ import javax.swing.SwingUtilities;
 import nz.sodium.Cell;
 import nz.sodium.Stream;
 
-public class EComboBox<E> extends JComboBox<E> {
+public class EComboBox<E> extends JComboBox<E> implements Editor<E> {
 	public static class Impl<T> extends EWidgetImpl<EComboBox<T>, T, EComboBox<T>, ItemListener> {
 		public Impl(final EComboBox<T> component, final Stream<T> inp, final T initValue) {
 			super(component, inp, initValue);
@@ -72,12 +72,13 @@ public class EComboBox<E> extends JComboBox<E> {
 	}
 
 	@Override
+	public Cell<E> outputCell() {
+		return impl.outputCell;
+	}
+
+	@Override
 	public void removeNotify() {
 		impl.unlisten();
 		super.removeNotify();
-	}
-
-	public Cell<E> value() {
-		return impl.outputCell;
 	}
 }

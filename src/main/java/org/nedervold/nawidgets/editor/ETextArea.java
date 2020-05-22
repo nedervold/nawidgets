@@ -5,7 +5,7 @@ import javax.swing.JTextArea;
 import nz.sodium.Cell;
 import nz.sodium.Stream;
 
-public class ETextArea extends JTextArea {
+public class ETextArea extends JTextArea implements Editor<String> {
 
 	private final ETextComponentImpl<ETextArea> impl;
 
@@ -15,12 +15,13 @@ public class ETextArea extends JTextArea {
 	}
 
 	@Override
+	public Cell<String> outputCell() {
+		return impl.outputCell;
+	}
+
+	@Override
 	public void removeNotify() {
 		impl.unlisten();
 		super.removeNotify();
-	}
-
-	public Cell<String> value() {
-		return impl.outputCell;
 	}
 }

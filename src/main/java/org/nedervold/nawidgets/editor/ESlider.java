@@ -8,7 +8,7 @@ import javax.swing.event.ChangeListener;
 import nz.sodium.Cell;
 import nz.sodium.Stream;
 
-public class ESlider extends JSlider {
+public class ESlider extends JSlider implements Editor<Integer> {
 	static class Impl extends EWidgetImpl<ESlider, Integer, ESlider, ChangeListener> {
 
 		public Impl(final ESlider component, final Stream<Integer> inputStream, final Integer initialValue) {
@@ -69,13 +69,14 @@ public class ESlider extends JSlider {
 	}
 
 	@Override
+	public Cell<Integer> outputCell() {
+		return impl.outputCell;
+	}
+
+	@Override
 	public void removeNotify() {
 		impl.unlisten();
 		super.removeNotify();
-	}
-
-	public Cell<Integer> value() {
-		return impl.outputCell;
 	}
 
 }

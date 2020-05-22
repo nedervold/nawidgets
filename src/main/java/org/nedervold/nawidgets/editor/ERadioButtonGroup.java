@@ -15,7 +15,7 @@ import javax.swing.SwingUtilities;
 import nz.sodium.Cell;
 import nz.sodium.Stream;
 
-public class ERadioButtonGroup extends JRadioButtonGroup {
+public class ERadioButtonGroup extends JRadioButtonGroup implements Editor<Optional<String>> {
 
 	static class Impl extends EWidgetImpl<ERadioButtonGroup, Optional<String>, ERadioButtonGroup, ActionListener> {
 
@@ -98,6 +98,11 @@ public class ERadioButtonGroup extends JRadioButtonGroup {
 	}
 
 	@Override
+	public Cell<Optional<String>> outputCell() {
+		return impl.outputCell;
+	}
+
+	@Override
 	public void removeNotify() {
 		impl.unlisten();
 		super.removeNotify();
@@ -118,8 +123,5 @@ public class ERadioButtonGroup extends JRadioButtonGroup {
 		} else {
 			return Optional.empty();
 		}
-	}
-	public Cell<Optional<String>> value() {
-		return impl.outputCell;
 	}
 }

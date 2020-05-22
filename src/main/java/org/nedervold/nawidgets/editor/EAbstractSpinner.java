@@ -6,7 +6,7 @@ import javax.swing.SpinnerModel;
 import nz.sodium.Cell;
 import nz.sodium.Stream;
 
-public abstract class EAbstractSpinner<V> extends JSpinner {
+public abstract class EAbstractSpinner<V> extends JSpinner implements Editor<V> {
 	protected ESpinnerImpl<V> impl;
 
 	protected EAbstractSpinner(final SpinnerModel spinnerModel, final Stream<V> inputStream, final V initValue) {
@@ -15,12 +15,13 @@ public abstract class EAbstractSpinner<V> extends JSpinner {
 	}
 
 	@Override
+	public Cell<V> outputCell() {
+		return impl.outputCell;
+	}
+
+	@Override
 	public void removeNotify() {
 		impl.unlisten();
 		super.removeNotify();
-	}
-
-	public Cell<V> value() {
-		return impl.outputCell;
 	}
 }
