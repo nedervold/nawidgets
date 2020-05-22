@@ -33,8 +33,12 @@ import org.nedervold.nawidgets.editor.EIntegerSpinner;
 import org.nedervold.nawidgets.editor.ESlider;
 import org.nedervold.nawidgets.editor.ETextArea;
 
+import io.vavr.Tuple;
+import io.vavr.Tuple2;
 import nz.sodium.Cell;
+import nz.sodium.Operational;
 import nz.sodium.Stream;
+import nz.sodium.StreamLoop;
 import nz.sodium.StreamSink;
 import nz.sodium.Transaction;
 
@@ -91,14 +95,37 @@ public class DemoEditorFrame extends JFrame {
 			final Box vbox2 = Box.createVerticalBox();
 
 			// TODO I wanted to put these two in sync, but can't figure how to do it.
-			final EIntegerSpinner spinner = new EIntegerSpinner(0, 100, 1, new Stream<>(), 0);
-			final ESlider slider = new ESlider(SwingConstants.HORIZONTAL, 0, 100, new Stream<>(), 0);
+			final Stream<Integer> origSliderInput = new StreamSink<>();
+			final Stream<Integer> origSpinnerInput = new StreamSink<>();
+			final StreamLoop<Integer> sliderDeferredInput = new StreamLoop<>();
+			final StreamLoop<Integer> spinnerDeferredInput = new StreamLoop<>();
+			final Stream<Integer> sliderInput = origSliderInput.orElse(sliderDeferredInput);
+			final Stream<Integer> spinnerInput = origSpinnerInput.orElse(spinnerDeferredInput);
+
+			final EIntegerSpinner spinner = new EIntegerSpinner(0, 100, 1, spinnerInput, 0);
+			final ESlider slider = new ESlider(SwingConstants.HORIZONTAL, 0, 100, sliderInput, 0);
 			slider.setMajorTickSpacing(10);
 			slider.setPaintTicks(true);
 			slider.createStandardLabels(10);
 			slider.setPaintLabels(true);
+
+			final Stream<Integer> sliderUpdates = Operational.updates(slider.value());
+			final Stream<Integer> spinnerUpdates = Operational.updates(spinner.value());
+
+			final Stream<Tuple2<Integer, Integer>> sliderUpdatesWithSpinnerValue = sliderUpdates
+					.snapshot(spinner.value(), (sl, sp) -> Tuple.of(sl, sp));
+			final Stream<Tuple2<Integer, Integer>> spinnerUpdatesWithSliderValue = spinnerUpdates
+					.snapshot(slider.value(), (sl, sp) -> Tuple.of(sl, sp));
+
+			final Stream<Integer> filteredNewSpinnerValue = sliderUpdatesWithSpinnerValue.filter((t) -> t._1 != t._2)
+					.map(Tuple2::_1);
+			final Stream<Integer> filteredNewSliderValue = spinnerUpdatesWithSliderValue.filter((t) -> t._1 != t._2)
+					.map(Tuple2::_1);
+			sliderDeferredInput.loop(Operational.defer(filteredNewSliderValue));
+			spinnerDeferredInput.loop(Operational.defer(filteredNewSpinnerValue));
+
 			final Cell<String> diff = spinner.value().lift(slider.value(),
-					(sp, sl) -> "spinner - slider = " + (sp - sl));
+					(sp, sl) -> "spinner=" + sp + "; slider=" + sl);
 
 			vbox2.add(spinner);
 			vbox2.add(slider);
