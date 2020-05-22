@@ -8,6 +8,7 @@ public class App {
 		SwingUtilities.invokeLater(() -> {
 			new DemoDisplayFrame();
 			new DemoEditorFrame();
+			new DemoUtilsFrame();
 		});
 	}
 }
