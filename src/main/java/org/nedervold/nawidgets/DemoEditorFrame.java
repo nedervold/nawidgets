@@ -51,9 +51,11 @@ public class DemoEditorFrame extends JFrame {
 	private static final int BORDER_SIZE = 8;
 
 	private static List<JLabel> f(final String str) {
-		final String[] strs = str.toLowerCase().split("\\W+");
-		final TreeSet<String> ts = new TreeSet<>(Arrays.asList(strs));
 		final List<JLabel> res = new ArrayList<>();
+		if (str.isEmpty())
+			return res;
+		final String[] strs = str.toLowerCase().split("(\\W|\\n)+");
+		final TreeSet<String> ts = new TreeSet<>(Arrays.asList(strs));
 		for (final String s : ts) {
 			res.add(new JLabel(s));
 		}
@@ -61,10 +63,12 @@ public class DemoEditorFrame extends JFrame {
 	}
 
 	private static List<JLabel> f2(final String str) {
+		final List<JLabel> res = new ArrayList<>();
+		if (str.isEmpty())
+			return res;
 		final int SMALL_BORDER_SIZE = 4;
 		final String[] strs = str.toLowerCase().split("\\W+");
 		final TreeSet<String> ts = new TreeSet<>(Arrays.asList(strs));
-		final List<JLabel> res = new ArrayList<>();
 		for (final String s : ts) {
 			final JLabel label = new JLabel(s);
 			final Border empty = BorderFactory.createEmptyBorder(SMALL_BORDER_SIZE, SMALL_BORDER_SIZE,
