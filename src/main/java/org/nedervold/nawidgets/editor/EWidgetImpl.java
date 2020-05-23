@@ -22,7 +22,7 @@ public abstract class EWidgetImpl<S, V, M, L> {
 
 	protected final M model;
 
-	protected final Cell<V> outputCell;
+	public final Cell<V> outputCell;
 
 	private final Listener sodiumListener;
 

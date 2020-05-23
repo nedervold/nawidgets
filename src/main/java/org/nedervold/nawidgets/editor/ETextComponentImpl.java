@@ -9,7 +9,7 @@ import javax.swing.text.JTextComponent;
 import nz.sodium.Stream;
 
 public class ETextComponentImpl<S extends JTextComponent> extends EWidgetImpl<S, String, Document, DocumentListener> {
-	ETextComponentImpl(final S comp, final Stream<String> inp, final String init) {
+	public ETextComponentImpl(final S comp, final Stream<String> inp, final String init) {
 		super(comp, inp, init);
 	}
 
