@@ -1,7 +1,8 @@
 .PHONY: run
 run :
 	mvn package
-	java -jar ./target/nawidgets-0.1.jar
+	cp ./target/nawidgets-0.1.jar .
+	java -jar nawidgets-0.1.jar
 
 
 .PHONY: clean
