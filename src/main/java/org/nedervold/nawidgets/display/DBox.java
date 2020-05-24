@@ -20,6 +20,11 @@ public class DBox<C extends JComponent> extends Box {
 			component.removeAll();
 			for (final C comp : value) {
 				component.add(comp);
+				// TODO These two lines were added because they seem to work but I don't fully
+				// understand the mechanism underlying them. Research it and document what's
+				// supposed to be done and why.
+				comp.revalidate();
+				comp.repaint();
 			}
 			// TODO These two lines were added because they seem to work but I don't fully
 			// understand the mechanism underlying them. Research it and document what's

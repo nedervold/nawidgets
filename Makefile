@@ -1,4 +1,4 @@
-V=0.1.1-alpha
+V=0.1.2
 
 .PHONY: run
 run :
