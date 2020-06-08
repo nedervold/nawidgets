@@ -25,10 +25,8 @@ public class DProgressBar extends JProgressBar {
 		impl = new Impl(this, inputCell);
 	}
 
-	@Override
-	public void removeNotify() {
+	public void unlisten() {
 		impl.unlisten();
-		super.removeNotify();
 	}
 
 }

@@ -19,9 +19,7 @@ public abstract class EAbstractSpinner<V> extends JSpinner implements Editor<V> 
 		return impl.outputCell;
 	}
 
-	@Override
-	public void removeNotify() {
+	public void unlisten() {
 		impl.unlisten();
-		super.removeNotify();
 	}
 }

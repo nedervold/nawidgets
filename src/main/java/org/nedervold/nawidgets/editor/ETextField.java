@@ -19,9 +19,7 @@ public class ETextField extends JTextField implements Editor<String> {
 		return impl.outputCell;
 	}
 
-	@Override
-	public void removeNotify() {
+	public void unlisten() {
 		impl.unlisten();
-		super.removeNotify();
 	}
 }

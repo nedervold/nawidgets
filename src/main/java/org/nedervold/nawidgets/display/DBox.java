@@ -41,9 +41,7 @@ public class DBox<C extends JComponent> extends Box {
 		impl = new Impl<>(this, inputCell);
 	}
 
-	@Override
-	public void removeNotify() {
+	public void unlisten() {
 		impl.unlisten();
-		super.removeNotify();
 	}
 }

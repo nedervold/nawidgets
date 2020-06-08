@@ -1,4 +1,4 @@
-V=0.1.2
+V=0.1.4
 
 .PHONY: run
 run :
@@ -6,6 +6,10 @@ run :
 	cp ./target/nawidgets-$(V).jar .
 	java -jar nawidgets-$(V).jar
 
+
+.PHONY: install
+install :
+	mvn install
 
 .PHONY: clean
 clean :

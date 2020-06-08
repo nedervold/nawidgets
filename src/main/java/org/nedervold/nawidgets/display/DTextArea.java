@@ -25,10 +25,8 @@ public class DTextArea extends JTextArea {
 		setEditable(false);
 	}
 
-	@Override
-	public void removeNotify() {
+	public void unlisten() {
 		impl.unlisten();
-		super.removeNotify();
 	}
 
 }

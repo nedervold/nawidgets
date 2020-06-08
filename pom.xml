@@ -3,10 +3,10 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.nedervold.nawidgets</groupId>
   <artifactId>nawidgets</artifactId>
-  <version>0.1.2</version>
+  <version>0.1.4</version>
   <name>nawidgets</name>
   <!-- FIXME change it to the project's website -->
-  <url>https://github.com/nedervold/mvn-ci-pkg-spike</url>
+  <url>https://github.com/nedervold/nawidgets</url>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>1.8</maven.compiler.source>

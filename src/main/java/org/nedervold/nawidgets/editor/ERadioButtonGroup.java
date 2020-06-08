@@ -102,12 +102,6 @@ public class ERadioButtonGroup extends JRadioButtonGroup implements Editor<Optio
 		return impl.outputCell;
 	}
 
-	@Override
-	public void removeNotify() {
-		impl.unlisten();
-		super.removeNotify();
-	}
-
 	private Optional<ButtonModel> stringToButtonModel(final Optional<String> value) {
 		if (value.isPresent()) {
 			final String name = value.get();
@@ -123,5 +117,9 @@ public class ERadioButtonGroup extends JRadioButtonGroup implements Editor<Optio
 		} else {
 			return Optional.empty();
 		}
+	}
+
+	public void unlisten() {
+		impl.unlisten();
 	}
 }

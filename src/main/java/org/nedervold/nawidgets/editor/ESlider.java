@@ -73,10 +73,8 @@ public class ESlider extends JSlider implements Editor<Integer> {
 		return impl.outputCell;
 	}
 
-	@Override
-	public void removeNotify() {
+	public void unlisten() {
 		impl.unlisten();
-		super.removeNotify();
 	}
 
 }

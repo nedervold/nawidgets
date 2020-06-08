@@ -24,9 +24,7 @@ public class DLabel extends JLabel {
 		impl = new Impl(this, inputCell);
 	}
 
-	@Override
-	public void removeNotify() {
+	public void unlisten() {
 		impl.unlisten();
-		super.removeNotify();
 	}
 }

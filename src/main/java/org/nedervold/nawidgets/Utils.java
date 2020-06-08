@@ -2,6 +2,7 @@ package org.nedervold.nawidgets;
 
 import java.util.Optional;
 
+import io.vavr.collection.List.Nil;
 import nz.sodium.Cell;
 import nz.sodium.Lazy;
 import nz.sodium.Operational;
@@ -14,6 +15,14 @@ import nz.sodium.time.MillisecondsTimerSystem;
 // License here:
 // https://github.com/SodiumFRP/sodium/blob/89f40da2f62aed75201a86868e489f1564d667f6/COPYING
 // TODO Integrate the licence into this repository.
+/**
+ * @author nedervold
+ *
+ */
+/**
+ * @author nedervold
+ *
+ */
 public class Utils {
 
 	public static <A> Cell<A> calm(final Cell<A> a) {
@@ -86,6 +95,36 @@ public class Utils {
 	 */
 	public static <A> Cell<Optional<A>> holdOptional(final Stream<A> input) {
 		return input.map(Optional::of).hold(Optional.empty());
+	}
+
+	/**
+	 * Turns a list of cells into a cell of a list. "List" here means the functional
+	 * list from io.vavr.
+	 *
+	 * @param cellList
+	 * @return
+	 */
+	public static <A> Cell<io.vavr.collection.List<A>> sequenceC(final io.vavr.collection.List<Cell<A>> cellList) {
+		if (cellList.isEmpty()) {
+			return new Cell<>(Nil.instance());
+		} else {
+			final Cell<A> hd = cellList.head();
+			final Cell<io.vavr.collection.List<A>> tl = sequenceC(cellList.tail());
+			return tl.lift(hd, io.vavr.collection.List::prepend);
+		}
+	}
+
+	/**
+	 * Turns a list of cells into a cell of a list. "List" here means the standard
+	 * java.util.List.
+	 *
+	 * @param cellList
+	 * @return
+	 */
+	public static <A> Cell<java.util.List<A>> sequenceC(final java.util.List<Cell<A>> cellList) {
+		final io.vavr.collection.List<Cell<A>> cellList2 = io.vavr.collection.List.ofAll(cellList);
+		final Cell<io.vavr.collection.List<A>> listCell = sequenceC(cellList2);
+		return listCell.map(io.vavr.collection.List::asJava);
 	}
 
 	private Utils() {
